@@ -1,0 +1,17 @@
+head {
+     font-family: verdana;
+     font-size: 20px;
+     text-align: center;
+     background-color: #00008b;
+    }
+body {
+    background-image: url("stock-vector-cinema-motion-picture-film-projector-with-different-film-reel-in-d-isometric-style-design-element-1268426137.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #00008b;
+    font-family: verdana;
+    font-size: 20px;
+    text-align: center;
+    color: white;
+    }

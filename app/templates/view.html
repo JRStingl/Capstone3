@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Selection</title>
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+    <h1>Please select a movie from the dropdown</h1>
+</head>
+<body>
+
+<select name="table" method="GET" action="/">
+{% for name in table %}
+        <option value="{{ name }}">{{ name }}</option>
+    {% endfor %}
+</select>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<head>
+    <meta charset="utf-8">
+ <title>Movie Selection</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/main2.css">
+  <style>
+    .button {
+      border-radius: 25px;
+      background-color: #4981d4;
+      border: none;
+      color: white;
+      width: 100px;
+      height: 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <p>Please enter a movie below for a Recommendation</p>
+<form action="/action_page" method="POST">
+{{ form.autocomp.label }}: {{ form.autocomp }}
+<script>
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("autocomplete") }}'
+            }).done(function (data){
+                $('#movie_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 5
+                });
+            });
+        });
+</script>
+<p>
+    Maximum Movie Length: <input type="text" value="" name="Duration">
+    Genre: <input type="text" value="" name="Genre">
+    Type: <input type="text" value="" name="content_type">
+</p>
+<p>
+<input type="submit" class="button" value="Submit">
+<input type="reset" class="button" value="Reset">
+</p>
+</form>
+</body>
+</html>

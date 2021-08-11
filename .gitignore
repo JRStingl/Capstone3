@@ -1,1 +1,5 @@
 *.pkl
+*.jpg
+ignored/
+data/*
+distance/*

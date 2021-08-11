@@ -1,28 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
  <title>Movie Selection</title>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <link rel="stylesheet" type="text/css" href="static/test5.css">
-  <style>
-    .button {
-      border-radius: 25px;
-      background-color: #4981d4;
-      border: none;
-      color: white;
-      width: 100px;
-      height: 25px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    </style>
-</head>
+  <link rel="stylesheet" type="text/css" href="static/flextest3.css">
+
+</head>  
 <body>
-    <p>Please enter a movie below for a Recommendation</p>
+    <h2>Please Enter a Title Below for a Recommendation</h2>
+    <p></p>
 <form action="/action_page" method="POST">
 {{ form.autocomp.label }}: {{ form.autocomp }}
 <script>
@@ -37,13 +26,18 @@
             });
         });
 </script>
-<p>
-    Maximum Movie Length: <input type="text" value="" name="Duration">
-    Genre: <input type="text" value="" name="Genre">
-    Type:<select name="content_type" size="1" class="button">
+<p></p>   
+<p> 
+    Genre:&emsp;&emsp;Type: <br><select name="Genre" size="1" class="button">
+        <option value="Any">Any</option>
+        {%for genre in genre_list%}
+        <option value="{{genre}}">{{genre}}</option>
+    {%endfor%}
+    </select>
+    <select name="content_type" size="1" class="button">
         <option value="Any"> Any </option>
-        <option value="Movies"> Movies </option>
-        <option value="Show"> Show </option>
+        <option value="Movie"> Movies </option>
+        <option value="TV Show"> Show </option>
     </select>
 </p>
 <p>

@@ -3,16 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Movie Recommendation</title>
-    <link rel="stylesheet" type="text/css" href="static/testpop.css">
+    <link rel="stylesheet" type="text/css" href="static/flextest3.css">
     <h1>Sit Back and Enjoy These Fabulous Recommendations!</h1>
 </head>
-<style>
-a {
-    text-decoration:none;
-    color: inherit;
-}</style>
 <body>
-<p>Because you enjoyed {{movie_name}} we recommend:</p>
+<p style="font-weight:bold;">Because you enjoyed {{movie_name}} we recommend:</p>
 {%for i in posters[:5]%}
     {% set poster = posters[loop.index-1] %}
     {% set title = top_ten[loop.index-1] %}
@@ -20,19 +15,26 @@ a {
 <div class="dropdown">
     <img src={{poster}} width="182" height="268">
     <div class="dropdown-content">
+    {% if id[0] == 't'%}
     <a href="https://www.imdb.com/title/{{id}}" rel="noopener noreferrer" target="_blank"><img src={{poster}} width="273" height="402"></a>
     <div class="desc">{{title}}</div>
+    {%else%}
+    <a href="https://www.netflix.com/search?q={{title}}" rel="noopener noreferrer" target="_blank"><img src={{poster}} width="273" height="402"></a>
+    <div class="desc">{{title}}</div>
+    {%endif%}
     </div>
 </div>
 
 {%endfor%}
-<p>{{message}}</p>
+<p style="color: #050a30;font-weight:bold;">{{message}}</p>
 {%for movie in top_ten[5:]%}
     {% set id = ids[5:][loop.index-1] %}
-<p><a href="https://www.imdb.com/title/{{id}}" rel="noopener noreferrer" target="_blank">{{movie}}</a></p>
-{%endfor%}
-<p><a href="/"><img src="static/hombutton-white-home-button-11563211148zdfdwfoi16.png" width="50")></a></p>
+    {% if id[0] == 't'%}
+    <p><a href="https://www.imdb.com/title/{{id}}" rel="noopener noreferrer" target="_blank">{{movie}}</a></p>
+    {%else%}
+    <p><a href="https://www.netflix.com/search?q={{movie}}" rel="noopener noreferrer" target="_blank">{{movie}}</a></p>
+    {%endif%}
+    {%endfor%}
+    <p><a href="/" class="button">Home</a></p>
 </body>
 </html>
-
-<a href="https://www.imdb.com/title/{{id}}" rel="noopener noreferrer" target="_blank"></a>

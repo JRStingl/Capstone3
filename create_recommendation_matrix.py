@@ -39,8 +39,6 @@ def get_keywords(pd_df):
     return pd_df
 
 def make_keywords(string,dis=False):
-
-    
     # convert to lower case
     tokens = word_tokenize(string)
     tokens = [w.lower() for w in tokens]

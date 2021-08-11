@@ -3,3 +3,4 @@
 ignored/
 data/*
 distance/*
+.ipynb_checkpoints

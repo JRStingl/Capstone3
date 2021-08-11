@@ -17,7 +17,7 @@ def get_pickle(imdbid, imdb_movies):
         if ind < lst[i]:
             files = (lst[i])+1
             break
-    dbfile = open(f'../distance/translated_weights_full_set{int(files)}.pkl', 'rb')
+    dbfile = open(f'../distance/translated13_weights_full_set{int(files)}.pkl', 'rb')
     # dbfile = open(f'../distance/full_set{int(files)}.pkl', 'rb')
     # dbfile = open(f'../chunks/imdb_test{int(files)}.pkl', 'rb')
     # source, destination
@@ -36,54 +36,83 @@ def get_netflix_link(title):
 def get_imdb_link(title, c_type, c_year):
     title = "+".join(title.split())
     title = title +"+"+ c_type +"+"+ c_year
-    print(title)
+#     print(title)
     raw = get(f"https://www.google.com/search?q=imdb+{title}").text
     page = fromstring(raw)
     lst = raw.split("https://www.imdb.com/title/")
-    print(len(lst))
+#     print(len(lst))
     link = "https://www.imdb.com/title/" + lst[1].split('/')[0]
     return link, lst[1].split('/')[0]
 
 def clean_up(movie_min, message, test, year, duration, toy_story, imdb_movies, poster_images):
-    if duration == '':
-        duration = 1000
-    else:
-        duration = int(duration)
-    if duration < movie_min:
-        message = "Sorry No Available Movies of that duration, try increasing Runtime"
+#     if duration == '':
+#         duration = 1000
+#     else:
+#         duration = int(duration)
+#     if duration < movie_min:
+#         message = "Sorry No Available Movies of that duration, try increasing Runtime"
     genre = request.form.get('Genre')
     content_type = request.form.get('content_type')
-    if genre == '':
-        genre = ' '
+#     print(content_type)
+    if content_type == 'Any':
+        content_type = ''
+        
+    if genre == 'Any':
+        genre = ''
     looking_for=10
 #     print(genre)
     m_test = imdb_movies[(imdb_movies.original_title==test)&(imdb_movies.year==year)].title_id.values[0]
-    print(m_test)
+#     print(m_test)
     matrix, ind = get_pickle(m_test, imdb_movies)
     dex = (ind-np.argsort(matrix[0])[0])
     recommends = np.argsort(matrix[dex])[1:]
-    top_ten =imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))].original_title[0:looking_for].values
-    top_ids =imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))].title_id[0:looking_for].values
+    top_ten =imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))&(imdb_movies.iloc[recommends].type.str.contains(content_type))].original_title[0:looking_for].values
+    top_ids =imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))&(imdb_movies.iloc[recommends].type.str.contains(content_type))].title_id[0:looking_for].values
 #     top_ten = imdb_movies.iloc[recommends].original_title[0:10].values
     posters = []
-    ids = imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))].title_id[0:looking_for].values
-    new_ids=[]
-    for m_id, title in zip(ids,top_ten):
-        if m_id[0]=='s':
-            # _, imdb_id = get_imdb_link(imdb_movies[imdb_movies.title_id==id].original_title)
-            c_type=imdb_movies[imdb_movies.title_id==m_id].type
-            c_year=imdb_movies[imdb_movies.title_id==m_id].year
-            print(m_id, title, year)
-            _, imdb_id = get_imdb_link(title, c_type, c_year)
-            new_ids.append(imdb_id)
-        else:
-            new_ids.append(m_id)
-    ids = new_ids      
+    ids = imdb_movies.iloc[recommends][(imdb_movies.iloc[recommends].genre.str.contains(genre))&(imdb_movies.iloc[recommends].type.str.contains(content_type))].title_id[0:looking_for].values
+#     new_ids=[]
+#     for m_id, title in zip(ids,top_ten):
+#         if m_id[0]=='s':
+#             # _, imdb_id = get_imdb_link(imdb_movies[imdb_movies.title_id==id].original_title)
+#             c_type=imdb_movies[imdb_movies.title_id==m_id].type
+#             c_year=imdb_movies[imdb_movies.title_id==m_id].year
+# #             print(m_id, title, year)
+#             _, imdb_id = get_imdb_link(title, c_type, c_year)
+#             new_ids.append(imdb_id)
+#         else:
+#             new_ids.append(m_id)
+#     ids = new_ids      
     for vals in ids:
-#     for vals in imdb_movies.iloc[recommends].imdb_title_id[0:10].values:
-        val = int(vals[2:])
-        if val in poster_images.imdbId.values:
-            posters.append(poster_images[poster_images.imdbId==val].Poster.values[0])
-        else:
-            posters.append(toy_story)
+        if vals[0] == 't':
+    #     for vals in imdb_movies.iloc[recommends].imdb_title_id[0:10].values:
+            val = int(vals[2:])
+            if val in poster_images.imdbId.values:
+                posters.append(poster_images[poster_images.imdbId==val].Poster.values[0])
+                continue
+        posters.append(toy_story)
     return message, top_ten, posters, test, ids 
+
+
+
+# <style>
+# a {
+#     text-decoration:none;
+#     color: inherit;
+# }</style>
+
+#   <style>
+#     .button {
+#       border-radius: 25px;
+#       background-color: #4981d4;
+#       border: none;
+#       color: white;
+#       width: 100px;
+#       height: 25px;
+#       text-align: center;
+#       text-decoration: none;
+#       display: inline-block;
+#       font-size: 16px;
+#       cursor: pointer;
+#     }
+#     </style>

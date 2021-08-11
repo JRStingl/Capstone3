@@ -10,18 +10,18 @@ from all_help import get_pickle, clean_up
 app = Flask(__name__)
 
 imdb_movies = pd.read_csv("../Combined_Netflix_IMDb_Useful_Columns.csv", low_memory=False)
-# imdb_movies = pd.read_csv("../movies_less_info.csv", low_memory=False)
 poster_images = pd.read_csv('../poster_image.csv')
 toy_story = 'static/poster_not_found.png'
+dbfile = open(f'../genre_list.pkl', 'rb')
+genre_list = pickle.load(dbfile)                     
+dbfile.close() 
 
 class SearchForm(Form):
-    autocomp = TextField('Movie title' ,id='movie_autocomplete')
+    autocomp = TextField('Title' ,id='movie_autocomplete')
 
 @app.route('/_autocomplete', methods=['GET','POST'])
 def autocomplete():
     dbfile = open(f'../all_title_list.pkl', 'rb')
-#     dbfile = open(f'../title_list2.pkl', 'rb')
-    # source, destination
     title = pickle.load(dbfile)                     
     dbfile.close()  
     return Response(json.dumps(title), mimetype='application/json')
@@ -30,7 +30,7 @@ def autocomplete():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = SearchForm(request.form)
-    return render_template("search.html", form=form)
+    return render_template("search.html", form=form, genre_list=genre_list)
 
 
 @app.route('/action_page', methods=['GET','POST'])
@@ -44,7 +44,7 @@ def action_page():
     message='As well as:'
     test = request.form['autocomp']
     duration = request.form.get('Duration')
-    if test == '':
+    if (test == '') or ('(' not in test):
         return redirect('/')
     year = test.replace(")","").split(" (")[1]
     test = test.replace(")","").split(" (")[0]

@@ -3,6 +3,43 @@ import pandas as pd
 import numpy as np
 from deep_translator import GoogleTranslator
 
+def make_poster_file():
+    # create id and poster link only CSV for Flask
+    posters = pd.read_csv('data/MovieGenre.csv')
+    post = posters[['imdbId','Poster']].copy()
+    post.dropna(inplace=True)
+    post.to_csv("poster_image.csv")
+    return
+
+def make_genre_file():
+    #create genre list for Flask
+    genres_maybe = total_list.genre.unique()
+    collect = []
+
+    # split genre list and add genre types to set
+    for genre in genres_maybe:
+        collect.append(genre.split(", "))
+    set_test = set()
+    for val in collect:
+        if isinstance(val,list):
+            for tes in val:
+                set_test.add(tes)
+        else:
+            set_test.add(val)
+    # go through set and split compound genres into components and add all components to set        
+    collect = []
+    for genre in set_test:
+        collect.append(genre.split(" & "))
+    set_test = set()
+    for val in collect:
+        if isinstance(val,list):
+            for tes in val:
+                set_test.add(tes)
+        else:
+            set_test.add(val)
+    # save CSV of genre list in case offline editing is desired
+    pd.DataFrame(data=set_test, columns=['Genres']).to_csv('genre_to_edit.csv')
+    return 'genre_to_edit.csv'
 
 if __name__ == "__main__":
     # load data from CSVs into pandas dataframes
@@ -35,39 +72,15 @@ if __name__ == "__main__":
     total_list.to_csv("translated_in_case.csv")
 
     # create id and poster link only CSV for Flask
-    posters = pd.read_csv('data/MovieGenre.csv')
-    post = posters[['imdbId','Poster']].copy()
-    post.dropna(inplace=True)
-    post.to_csv("poster_image.csv")
+    make_poster_file()
 
-    #create genre list for Flask
-    genres_maybe = total_list.genre.unique()
-    collect = []
-    for genre in genres_maybe:
-        collect.append(genre.split(", "))
-    set_test = set()
-    for val in collect:
-        if isinstance(val,list):
-            for tes in val:
-                set_test.add(tes)
-        else:
-            set_test.add(val)
-    collect = []
-    for genre in set_test:
-        collect.append(genre.split(" & "))
-    set_test = set()
-    for val in collect:
-        if isinstance(val,list):
-            for tes in val:
-                set_test.add(tes)
-        else:
-            set_test.add(val)
-            
-    pd.DataFrame(data=set_test, columns=['Genres']).to_csv('genre_to_edit.csv')
+    # create CSV file for offline editing in case desired 
+    genre_file_name = make_genre_file(total_list)
 
-    # 
-    genre_list = pd.read_csv('genre_to_edit.csv').Genres.to_list()
+    # after any offline cleanup desired read CSV back in and create pickle file
+    genre_list = pd.read_csv(genre_file_name).Genres.to_list()
     dbfile = open('genre_list.pkl', 'ab')
-    # source, destination
     pickle.dump(genre_list, dbfile)                     
     dbfile.close()
+
+

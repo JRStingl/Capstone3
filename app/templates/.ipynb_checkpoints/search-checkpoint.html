@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+ <title>Movie Selection</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/flextest3.css">
+
+</head>  
+<body>
+    <h2>Please Enter a Title Below for a Recommendation</h2>
+    <p></p>
+<form action="/action_page" method="POST">
+{{ form.autocomp.label }}: {{ form.autocomp }}
+<script>
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("autocomplete") }}'
+            }).done(function (data){
+                $('#movie_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 5
+                });
+            });
+        });
+</script>
+<p></p>   
+<p> 
+    Genre:&emsp;&emsp;Type: <br><select name="Genre" size="1" class="button">
+        <option value="Any">Any</option>
+        {%for genre in genre_list%}
+        <option value="{{genre}}">{{genre}}</option>
+    {%endfor%}
+    </select>
+    <select name="content_type" size="1" class="button">
+        <option value="Any"> Any </option>
+        <option value="Movie"> Movies </option>
+        <option value="TV Show"> Show </option>
+    </select>
+</p>
+<p>
+<input type="submit" class="button" value="Submit">
+<input type="reset" class="button" value="Reset">
+</p>
+</form>
+</body>
+</html>

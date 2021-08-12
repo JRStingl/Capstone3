@@ -1,1 +1,1 @@
-pickel files for recommendation matrix saved to distance folder
+pickle files for recommendation matrix saved to distance folder

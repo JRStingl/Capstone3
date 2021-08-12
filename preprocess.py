@@ -11,7 +11,17 @@ def make_poster_file():
     post.to_csv("poster_image.csv")
     return
 
-def make_genre_file():
+def make_title_file(total_list):
+    title_list = total_list.original_title.to_list()
+    for k, v in enumerate(title_list):
+        title_list[k] = v + " ("+total_list.year.iloc[k]+")"
+    dbfile = open(f'all_title_list.pkl', 'ab')
+    # source, destination
+    pickle.dump(title_list, dbfile)                     
+    dbfile.close()
+    return
+
+def make_genre_file(total_list):
     #create genre list for Flask
     genres_maybe = total_list.genre.unique()
     collect = []
@@ -74,13 +84,15 @@ if __name__ == "__main__":
     # create id and poster link only CSV for Flask
     make_poster_file()
 
+    make_title_file(total_list)
+
     # create CSV file for offline editing in case desired 
     genre_file_name = make_genre_file(total_list)
+
+    var = input(f"Press enter when finished editing {genre_file_name}. ")
 
     # after any offline cleanup desired read CSV back in and create pickle file
     genre_list = pd.read_csv(genre_file_name).Genres.to_list()
     dbfile = open('genre_list.pkl', 'ab')
     pickle.dump(genre_list, dbfile)                     
     dbfile.close()
-
-

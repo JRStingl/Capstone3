@@ -1,18 +1,30 @@
-# Capstone3
-repository for DSI Capstone 3
+# Galvanize Data Science Immersive Capstone 3
 
-## Proposal 1:
-Make some sort of a recommender for available content possibly using both the netflix and imdb datasets
+![](data/Capstone3.png)
+
+![](data/Capstone3(1).png)
+
+![](data/Capstone3(2).png)
+
+![](data/Capstone3(3).png)
+
+Links for Kaggle Datasets used:
 
 https://www.kaggle.com/shivamb/netflix-shows
 
 https://www.kaggle.com/stefanoleone992/imdb-extensive-dataset
 
+https://www.kaggle.com/neha1703/movie-genre-from-its-poster
 
-## Proposal 2:
-Work on better image classification with this bird set.
 
-https://www.kaggle.com/gpiosenka/100-bird-species
+![](data/Capstone3(4).png)
 
-## Proposal 3:
-I don't really have an idea for a proposal three and I am not really sure about the first two.
+![](data/Capstone3(5).png)
+
+![](data/Capstone3(6).png)
+
+![](data/Capstone3(7).png)
+
+![](data/Capstone3(8).png)
+
+![](data/Capstone3(9).png)
